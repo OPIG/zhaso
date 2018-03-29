@@ -1,0 +1,31 @@
+﻿<#+
+// <copyright file="IServiceTemplate.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class IServiceTemplate : CSharpTemplate
+{
+    private ModelInfo ModelInfo{set;get;}
+    public RepositoryTemplate(ModelInfo modelInfo)
+    {
+        this.ModelInfo = modelInfo;
+    }
+    public override string TransformText()
+    {
+        base.TransformText();
+#>
+using <#= ModelInfo.Namespace #>.Entities;
+using <#= ModelInfo.Namespace #>.Interfaces;
+using <#= ModelInfo.Namespace #>.Repositories;
+
+namespace <#= ModelInfo.Namespace #>.Services
+{
+    public class I<#= ModelInfo.ModelName #>Service: IService<#= ModelInfo.ModelName #>
+    {
+    }
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+    }
+}
+#>

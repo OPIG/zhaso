@@ -1,0 +1,34 @@
+﻿<#+
+// <copyright file="RepositoryTemplate.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class RepositoryTemplate : CSharpTemplate
+{
+    private ModelInfo ModelInfo{set;get;}
+    public RepositoryTemplate(ModelInfo modelInfo)
+    {
+        this.ModelInfo = modelInfo;
+    }
+    public override string TransformText()
+    {
+        base.TransformText();
+#>
+using Microsoft.EntityFrameworkCore;
+using <#= ModelInfo.Namespace #>.Entities;
+using <#= ModelInfo.Namespace #>.Interfaces;
+
+namespace <#= ModelInfo.Namespace #>.Repositories
+{
+    public class <#= Identifier(ModelInfo.ModelName) #>Repository: RepositoryBase<<#= ModelInfo.ModelName #>>,<#=ModelInfo.HasRepositoryInterface ? $"IRepository<{ModelInfo.ModelName}>" : $"I{ModelInfo.ModelName}Repository" #>
+    {
+        public <#= ModelName #>Repository(DbContext dbContext)
+            : base(dbContext)
+        { }
+    }
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+    }
+}
+#>

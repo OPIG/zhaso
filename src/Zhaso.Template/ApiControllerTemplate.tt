@@ -1,0 +1,30 @@
+﻿<#+
+// <copyright file="ApiControllerTemplate.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class ApiControllerTemplate : CSharpTemplate
+{
+    public override string TransformText()
+    {
+        base.TransformText();
+#>
+using Microsoft.AspNetCore.Mvc;
+using <#= ModelInfo.Namespace #>.Entities;
+using <#= ModelInfo.Namespace #>.Interfaces;
+
+namespace <#= ModelInfo.Namespace #>.Web.Controllers.Api
+{
+    [Route("api/[controller]")]
+    public class <#= ModelInfo.ModelNames #>Controller : GenericController<<#= ModelInfo.ModelName #>>
+    {
+        public <#= ModelInfo.ModelNames #>Controller(<#=ModelInfo.HasRepositoryInterface ? $"IRepository<{ModelInfo.ModelName}>" : $"I{ModelInfo.ModelName}Repository" #> repository)
+           : base(repository)
+        { }
+    }
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+    }
+}
+#>

@@ -1,0 +1,34 @@
+﻿<#+
+// <copyright file="RepositoryTemplate.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class RepositoryTemplate : CSharpTemplate
+{
+    private ModelInfo ModelInfo{set;get;}
+    public RepositoryTemplate(ModelInfo modelInfo)
+    {
+        this.ModelInfo = modelInfo;
+    }
+    public override string TransformText()
+    {
+        base.TransformText();
+#>
+using <#= ModelInfo.Namespace #>.Entities;
+using <#= ModelInfo.Namespace #>.Interfaces;
+using <#= ModelInfo.Namespace #>.Repositories;
+
+namespace <#= ModelInfo.Namespace #>.Services
+{
+    public class <#= Identifier(ModelInfo.ModelName) #>Service: ServiceBase<<#= ModelInfo.ModelName #>>,<#=ModelInfo.HasServiceInterface ? $"IService<{ModelInfo.ModelName}>" : $"I{ModelInfo.ModelName}Service" #>
+    {
+        public <#= ModelName #>Service(<#=ModelInfo.HasRepositoryInterface ? $"IRepository<{ModelInfo.ModelName}>" : $"I{ModelInfo.ModelName}Repository" #> repository)
+            : base(repository)
+        { }
+    }
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+    }
+}
+#>
